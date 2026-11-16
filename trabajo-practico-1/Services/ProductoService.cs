@@ -1,24 +1,26 @@
-﻿using trabajo_practico_1.Models;
+﻿using trabajo_practico_1.Data;
+using trabajo_practico_1.Models;
 
 namespace trabajo_practico_1.Services
 {
     public class ProductoService : IProductoService
     {
-        // Datos de prueba (todavía NO usamos la base de datos)
-        private readonly List<Producto> _productos = new()
+        private readonly IProductoRepository _productoRepository;
+
+        // ASP.NET Core nos inyecta el Repository
+        public ProductoService(IProductoRepository productoRepository)
         {
-            new Producto { Id = 1, Nombre = "Teclado", Precio = 45000m, Stock = 15 },
-            new Producto { Id = 2, Nombre = "Mouse",   Precio = 18500.50m, Stock = 30 }
-        };
+            _productoRepository = productoRepository;
+        }
 
         public List<Producto> ObtenerTodos()
         {
-            return _productos;
+            return _productoRepository.ObtenerTodos();
         }
 
         public Producto? ObtenerPorId(int id)
         {
-            return _productos.FirstOrDefault(p => p.Id == id);
+            return _productoRepository.ObtenerPorId(id);
         }
     }
 }
